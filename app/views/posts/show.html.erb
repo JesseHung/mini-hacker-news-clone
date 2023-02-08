@@ -1,0 +1,44 @@
+<h1><%= link_to 'Mini Hacker News', welcome_index_url %></h1>
+
+<br>
+
+<%= link_to @post.title, @post.url %><br>
+<%= @post.content %><br>
+<%= @post.voted_points %> points by <%= @post.user.email %> <%= distance_of_time_in_words(Time.now, @post.created_at) %> | <%= @post.comments_count %> comments
+
+
+
+<%= form_with(model: @new_comment, local: true, url: comments_url, methods: :post) do |f| %>
+
+  <% if @new_comment.errors.any? %>
+    <h2><%= pluralize(@new_comment.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+    <ul>
+    <% @new_comment.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+
+  <div class="field">
+    <%= f.hidden_field :post_id, value: params[:id] %>
+    <%= f.hidden_field :level, value: 1 %>
+    <%= f.text_area :content, size: '50x10' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Add Comment" %>
+  </div>
+<% end %>
+<br>
+<hr>
+
+<%= render @comments %>
+
+<%= javascript_pack_tag 'post_show_js' %>
+
+<style>
+  .collapsed-comment {
+    display: none;
+  }
+</style>

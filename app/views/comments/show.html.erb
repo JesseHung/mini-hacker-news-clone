@@ -1,0 +1,32 @@
+<h1><%= link_to 'Mini Hacker News', welcome_index_url %></h1>
+
+<br>
+
+<%= @comment.user.email %> <%= distance_of_time_in_words(Time.now, @comment.created_at) %> ago | on: <%= link_to @post.title, post_url(@post) %><br>
+<%= @comment.content %><br>
+
+<%= form_with(model: @new_comment, local: true, url: comments_url, methods: :post) do |f| %>
+
+  <% if @new_comment.errors.any? %>
+    <h2><%= pluralize(@new_comment.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+    <ul>
+    <% @new_comment.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+
+  <div class="field">
+    <%= f.hidden_field :post_id, value: @comment.post_id %>
+    <%= f.hidden_field :level, value: @comment.level + 1 %>
+    <%= f.hidden_field :comment_id, value: @comment.id %>
+    <%= f.text_area :content, size: '50x10' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Add Comment" %>
+  </div>
+<% end %>
+<br>
+<hr>

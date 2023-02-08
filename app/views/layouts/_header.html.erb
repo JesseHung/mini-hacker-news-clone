@@ -1,0 +1,8 @@
+<div style="float: right">
+  <% if user_signed_in? %>
+    <%= current_user.email %>
+    <%= link_to 'Logout', destroy_user_session_url, :method=>:delete %> 
+  <% else %>
+    <%= link_to 'Login', new_user_session_url %>
+  <% end %>
+</div>

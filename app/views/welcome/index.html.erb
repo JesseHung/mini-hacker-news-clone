@@ -1,0 +1,19 @@
+<h1>Mini Hacker News</h1>
+<%= link_to 'New Post', new_post_url %> <br>
+<% @posts.each_with_index do |post, index| %>
+  <%= index+1 %>. 
+
+  <% if current_user.present? && post.post_upvotes.exists?(user_id: current_user.id) %>
+    <%= link_to "unvote", "#{unvote_post_url(post.id)}?page=#{params[:page]}" %> 
+  <% else %>
+    <%= link_to "up", "#{upvote_post_url(post.id)}?page=#{params[:page]}" %> 
+  <% end %>
+  <%= link_to post.title, post.url %><br>
+  <%= post.points %> by <%= post.user.email%> <%= distance_of_time_in_words(Time.now, post.created_at) %> ago | <%= link_to "#{post.comments_count} comments", post_url(post.id) %> <br>  
+
+  <hr>
+
+<% end %>
+
+
+<%= paginate @posts %>

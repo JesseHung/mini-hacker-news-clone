@@ -1,0 +1,25 @@
+<div class="field comment-head" data-turbolinks="false">
+  <div class="comment-body">
+    <% if current_user.present? && comment.comment_votes.exists?(user_id: current_user.id) %>
+      <%= link_to "unvote", "#{unvote_comment_url(comment.id)}" %> 
+    <% else %>
+      <%= link_to "up", "#{upvote_comment_url(comment.id)}" %> 
+    <% end %>
+    <%= comment.user.email %> <%= distance_of_time_in_words(Time.now, comment.created_at) %> ago 
+    <a href="#" class="comment-toggles" id="comment-toggle-<%= comment.id %>" onclick="toggleComment(<%= comment.id %>)">[-]</a> 
+    <a href="#" class="comment-toggles-collapsed collapsed-comment" id="comment-toggle-collapsed-<%= comment.id %>" onclick="toggleComment(<%= comment.id %>)">[+]</a><br>
+    <div class="comment-content" id="comment-content-<%= comment.id %>">
+      <%= comment.content %> <br>
+
+      <%= link_to 'Reply', comment_url(comment.id) unless comment.level == 8 %>
+
+      <div style="margin-left: 40px">
+        <%= render comment.sub_comments if comment.sub_comments.any? %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if comment.comment_id.nil? %>
+  <hr>
+<% end %>
