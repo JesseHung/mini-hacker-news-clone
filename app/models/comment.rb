@@ -9,12 +9,6 @@ class Comment < ApplicationRecord
     comment_votes.count
   end
 
-  # def points
-  #   # let's say G = 1.8 
-  #   self.points = (voted_points - 1) / (hour_past + 2) ** 1.8
-  #   self.save
-  # end
-
   def hour_past
     ((Time.now - created_at) / 1.hour).round
   end
